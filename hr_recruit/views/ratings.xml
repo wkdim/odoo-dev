@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record model="ir.ui.view" id="view_hr_applicant_form_inherit">
+        <field name="name">hr.applicant.form.rating</field>
+        <field name="model">hr.applicant</field>
+        <field name="inherit_id" ref="hr_recruitment.hr_applicant_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='application_summary']" position="after">
+                <page string="Interview Rating" invisible="not is_interview_stage">
+                    <field name="is_interview_stage" invisible="1"/>
+                    <field name="question_ratings">
+                        <tree editable="bottom" create="0" delete="0">
+                            <field name="question_title"/>
+                            <field name="rating" widget="radio" options="{'horizontal': true}"/>
+                            <field name="comment"/>
+                        </tree>
+                    </field>
+                </page>
+            </xpath> 
+            <xpath expr="//field[@name='type_id']" position="after">
+                <field name="interview_score" widget="percentpie" readonly="1" invisible="not is_interview_stage"/>
+            </xpath>
+            <xpath expr="//button[@name='archive_applicant']" position="after">
+                <button name="calculate_performance" string="Calculate Performance" type="object" class="oe_highlight" invisible="not is_interview_stage or interview_score > 0"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
